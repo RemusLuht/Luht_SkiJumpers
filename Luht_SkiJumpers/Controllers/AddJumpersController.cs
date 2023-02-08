@@ -19,6 +19,29 @@ namespace Luht_SkiJumpers.Controllers
         {
             _context = context;
         }
+
+        public IActionResult AddJumper()
+        {
+            return View();
+        }
+
+        // POST: AddJumpers/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddJumper([Bind("Id,Name")] AddJumpers addJumpers)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(addJumpers);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(JumpersList));
+            }
+            return View(addJumpers);
+        }
+
+
         private async Task SaveToDatabase(List<AddJumpers> jumpers)
         {
             foreach (var jumper in jumpers)
@@ -29,23 +52,53 @@ namespace Luht_SkiJumpers.Controllers
             await _context.SaveChangesAsync();
         }
 
-        // GET: AddJumpers/Create
-        public IActionResult AddDistance()
+
+        public async Task<IActionResult> AddDistance(string id)
         {
-            return View();
+            if (id == null || _context.AddJumpers == null)
+            {
+                return NotFound();
+            }
+
+            var addJumpers = await _context.AddJumpers.FindAsync(id);
+            if (addJumpers == null)
+            {
+                return NotFound();
+            }
+            return View(addJumpers);
         }
 
-        // POST: AddJumpers/Create
+        // POST: AddJumpers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDistance([Bind("Id,Distance")] AddJumpers addJumpers)
+        public async Task<IActionResult> AddDistance(string id, [Bind("Id,Name, Distance")] AddJumpers addJumpers)
         {
+
+            if (id != addJumpers.Id)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Add(addJumpers);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(addJumpers);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AddJumpersExists(addJumpers.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Rankings));
             }
             return View(addJumpers);
@@ -69,7 +122,7 @@ namespace Luht_SkiJumpers.Controllers
 
 
         // GET: AddJumpers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> JumpersList()
         {
             var jumpers = await _context.AddJumpers.ToListAsync();
             SaveToDatabase(jumpers);
