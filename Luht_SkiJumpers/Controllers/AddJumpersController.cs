@@ -28,45 +28,28 @@ namespace Luht_SkiJumpers.Controllers
 
             await _context.SaveChangesAsync();
         }
-        public async Task<IActionResult> AddDistance(string Id, int Distance)
+
+        // GET: AddJumpers/Create
+        public IActionResult AddDistance()
         {
-            if (Id == null)
-            {
-                return NotFound();
-            }
-
-            var jumper = await _context.AddJumpers.FirstOrDefaultAsync(j => j.Id == Id);
-            if (jumper == null)
-            {
-                return NotFound();
-            }
-
-            jumper.Distance = Distance;
-            _context.Update(jumper);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View();
         }
-        //// GET: AddJumpers/Create
-        //public IActionResult AddDistance()
-        //{
-        //    return View();
-        //}
 
-        //// POST: AddJumpers/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> AddDistance([Bind("Id,Distance")] AddJumpers addJumpers)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(addJumpers);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Rankings));
-        //    }
-        //    return View(addJumpers);
-        //}
+        // POST: AddJumpers/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddDistance([Bind("Id,Distance")] AddJumpers addJumpers)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(addJumpers);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Rankings));
+            }
+            return View(addJumpers);
+        }
 
         public IActionResult Rankings()
         {
