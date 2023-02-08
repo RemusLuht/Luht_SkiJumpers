@@ -1,0 +1,22 @@
+﻿@model List<Luht_SkiJumpers.Models.AddJumpers>
+
+<h2>Rankings</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Place</th>
+            <th>Name</th>
+            <th>Distance</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var jumper in Model)
+        {
+                <tr>
+                    <td>@jumper.Standings</td>
+                    <td>@jumper.Name</td>
+                    <td>@jumper.Distance</td>
+                </tr>
+        }
+    </tbody>
+</table>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Luht_SkiJumpers.Data;
 using Luht_SkiJumpers.Models;
+using Luht_SkiJumpers.Migrations;
 
 namespace Luht_SkiJumpers.Controllers
 {
@@ -18,11 +19,78 @@ namespace Luht_SkiJumpers.Controllers
         {
             _context = context;
         }
+        private async Task SaveToDatabase(List<AddJumpers> jumpers)
+        {
+            foreach (var jumper in jumpers)
+            {
+                _context.Update(jumper);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+        public async Task<IActionResult> AddDistance(string Id, int Distance)
+        {
+            if (Id == null)
+            {
+                return NotFound();
+            }
+
+            var jumper = await _context.AddJumpers.FirstOrDefaultAsync(j => j.Id == Id);
+            if (jumper == null)
+            {
+                return NotFound();
+            }
+
+            jumper.Distance = Distance;
+            _context.Update(jumper);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        //// GET: AddJumpers/Create
+        //public IActionResult AddDistance()
+        //{
+        //    return View();
+        //}
+
+        //// POST: AddJumpers/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddDistance([Bind("Id,Distance")] AddJumpers addJumpers)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(addJumpers);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Rankings));
+        //    }
+        //    return View(addJumpers);
+        //}
+
+        public IActionResult Rankings()
+        {
+            var jumpers = _context.AddJumpers.OrderByDescending(j => j.Distance).ToList();
+
+            for (int i = 0; i < jumpers.Count; i++)
+            {
+                jumpers[i].Standings = i + 1;
+            }
+
+            SaveToDatabase(jumpers);
+            return View(jumpers);
+        }
+
+
+
+
 
         // GET: AddJumpers
         public async Task<IActionResult> Index()
         {
-              return View(await _context.AddJumpers.ToListAsync());
+            var jumpers = await _context.AddJumpers.ToListAsync();
+            SaveToDatabase(jumpers);
+            return View(jumpers);
         }
 
         // GET: AddJumpers/Details/5

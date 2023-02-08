@@ -1,0 +1,12 @@
+﻿@model Luht_SkiJumpers.Models.AddJumpers
+
+<h2>Enter Distance</h2>
+<form asp-action="AddDistance">
+    <div class="form-group">
+        <label asp-for="Distance"></label>
+        <input asp-for="Distance" class="form-control" />
+        <span asp-validation-for="Distance" class="text-danger"></span>
+    </div>
+    <input type="submit" value="Save" class="btn btn-primary" />
+</form>
+
