@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Descend";
+}
+
+<h1>Descend</h1>
+
+<div>
+    Jumper: @ViewData["JumperName"]
+</div>
+
+<form asp-controller="Jump" asp-action="Leave" method="post">
+    <input type="submit" value="Leave" class="btn btn-primary" />
+</form>

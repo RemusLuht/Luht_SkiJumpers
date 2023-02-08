@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Jump";
+}
+
+<h1>Jump</h1>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<form asp-controller="Jump" asp-action="Descend" method="post">
+    <div class="form-group">
+        <label asp-for="jumperId">Jumper ID:</label>
+        <input type="text" class="form-control" asp-for="jumperId" />
+    </div>
+    <input type="submit" value="Descend" class="btn btn-primary" />
+</form>

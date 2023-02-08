@@ -36,10 +36,11 @@ namespace Luht_SkiJumpers.Controllers
             {
                 _context.Add(addJumpers);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(JumpersList));
+                return RedirectToAction("JumpersList", "AddJumpers");
             }
             return View(addJumpers);
         }
+
 
 
         private async Task SaveToDatabase(List<AddJumpers> jumpers)
@@ -124,7 +125,12 @@ namespace Luht_SkiJumpers.Controllers
         // GET: AddJumpers
         public async Task<IActionResult> JumpersList()
         {
-            var jumpers = await _context.AddJumpers.ToListAsync();
+            var jumpers = _context.AddJumpers.OrderByDescending(j => j.Distance).ToList();
+
+            for (int i = 0; i < jumpers.Count; i++)
+            {
+                jumpers[i].Standings = i + 1;
+            }
             SaveToDatabase(jumpers);
             return View(jumpers);
         }
