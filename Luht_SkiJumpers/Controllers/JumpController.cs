@@ -19,7 +19,7 @@ namespace Luht_SkiJumpers.Controllers
         }
 
         [HttpPost]
-        public IActionResult Descend(string jumperId)
+        public IActionResult Descend(string Id)
         {
             if (_isDescending)
             {
@@ -27,7 +27,7 @@ namespace Luht_SkiJumpers.Controllers
                 return View("Index");
             }
 
-            var jumper = _context.AddJumpers.FirstOrDefault(j => j.Id == jumperId);
+            var jumper = _context.AddJumpers.FirstOrDefault(j => j.Id == Id);
 
             if (jumper == null)
             {
