@@ -2,12 +2,8 @@
     ViewData["Title"] = "Descend";
 }
 
-<h1>Descend</h1>
+<h1>@ViewData["JumperName"] is Descending!</h1>
 
-<div>
-    Jumper: @ViewData["JumperName"]
-</div>
-
-<form asp-controller="Jump" asp-action="Leave" method="post">
-    <input type="submit" value="Leave" class="btn btn-primary" />
+<form method="post" asp-action="Leave">
+    <button type="submit" class="btn btn-primary">Finish Descent</button>
 </form>

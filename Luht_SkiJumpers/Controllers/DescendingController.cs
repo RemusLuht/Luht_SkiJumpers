@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Luht_SkiJumpers.Controllers
 {
-    public class JumpController : Controller
+    public class DescendingController : Controller
     {
         private static bool _isDescending = false;
         private readonly Luht_SkiJumpersContext _context;
 
-        public JumpController(Luht_SkiJumpersContext context)
+        public DescendingController(Luht_SkiJumpersContext context)
         {
             _context = context;
         }

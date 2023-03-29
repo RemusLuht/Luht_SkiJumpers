@@ -34,6 +34,11 @@ namespace Luht_SkiJumpers.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!int.TryParse(addJumpers.Id, out _))
+                {
+                    ModelState.AddModelError("Id", "The Id field should contain only numbers.");
+                    return View(addJumpers);
+                }
                 _context.Add(addJumpers);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("JumpersList", "AddJumpers");

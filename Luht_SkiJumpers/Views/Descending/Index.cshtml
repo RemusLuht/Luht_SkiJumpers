@@ -1,21 +1,18 @@
-﻿@model Luht_SkiJumpers.Models.AddJumpers
-@{
-    ViewData["Title"] = "Jump";
+﻿@{
+    ViewData["Title"] = "Descend";
 }
 
-<h1>Jump</h1>
+<h1>Descend</h1>
+
+<form method="post" asp-action="Descend">
+    <div class="form-group">
+        <label for="Id">Enter Jumper ID:</label>
+        <input type="text" name="Id" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Start Descent</button>
+</form>
 
 @if (ViewData["ErrorMessage"] != null)
 {
-    <div class="alert alert-danger">
-        @ViewData["ErrorMessage"]
-    </div>
+    <div class="alert alert-danger">@ViewData["ErrorMessage"]</div>
 }
-
-<form asp-controller="Jump" asp-action="Descend" method="post">
-    <div class="form-group">
-        <label asp-for="Id">Jumper ID:</label>
-        <input type="text" class="form-control" asp-for="Id" />
-    </div>
-    <input type="submit" value="Descend" class="btn btn-primary" />
-</form>
