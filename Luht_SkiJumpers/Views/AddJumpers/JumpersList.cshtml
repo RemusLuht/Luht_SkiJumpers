@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Luht_SkiJumpers.Models.AddJumpers>
+﻿@model IEnumerable<Luht_SkiJumpers.Models.Jumpers>
 
 @{
     ViewData["Title"] = "JumpersList";
@@ -11,9 +11,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Standings)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Distance)
             </th>
@@ -28,16 +25,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Standings)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Distance)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="AddDistance" asp-route-id="@item.Id">Add Distance</a>
                 </td>
             </tr>
         }

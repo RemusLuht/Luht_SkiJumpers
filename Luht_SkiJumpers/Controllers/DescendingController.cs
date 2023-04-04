@@ -1,11 +1,14 @@
 ﻿using Luht_SkiJumpers.Data;
 using Microsoft.AspNetCore.Mvc;
+using Luht_SkiJumpers.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Luht_SkiJumpers.Controllers
 {
     public class DescendingController : Controller
     {
-        private static bool _isDescending = false;
+        //private static bool _isDescending = false;
         private readonly Luht_SkiJumpersContext _context;
 
         public DescendingController(Luht_SkiJumpersContext context)
@@ -19,9 +22,11 @@ namespace Luht_SkiJumpers.Controllers
         }
 
         [HttpPost]
-        public IActionResult Descend(string Id)
+        public IActionResult Descend(string Id, bool Started)
         {
-            if (_isDescending)
+            TempData["id"] = Id;
+
+            if (Started)
             {
                 ViewData["ErrorMessage"] = "Another jumper is currently descending. Please wait.";
                 return View("Index");
@@ -35,7 +40,7 @@ namespace Luht_SkiJumpers.Controllers
                 return View("Index");
             }
 
-            _isDescending = true;
+            Started = true;
             ViewData["JumperName"] = jumper.Name;
             return View();
         }
@@ -43,8 +48,8 @@ namespace Luht_SkiJumpers.Controllers
         [HttpPost]
         public IActionResult Leave()
         {
-            _isDescending = false;
-            return RedirectToAction("Index");
+            var id = TempData["id"] as string;
+            return RedirectToAction("AddDistance", "AddJumpers", new { id = id });
         }
     }
 }

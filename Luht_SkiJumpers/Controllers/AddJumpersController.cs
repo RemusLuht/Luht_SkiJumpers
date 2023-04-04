@@ -30,7 +30,7 @@ namespace Luht_SkiJumpers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddJumper([Bind("Id,Name")] AddJumpers addJumpers)
+        public async Task<IActionResult> AddJumper([Bind("Id,Name")] Jumpers addJumpers)
         {
             if (ModelState.IsValid)
             {
@@ -40,6 +40,7 @@ namespace Luht_SkiJumpers.Controllers
                     return View(addJumpers);
                 }
                 _context.Add(addJumpers);
+                ViewBag.Names = addJumpers;
                 await _context.SaveChangesAsync();
                 return RedirectToAction("JumpersList", "AddJumpers");
             }
@@ -48,7 +49,7 @@ namespace Luht_SkiJumpers.Controllers
 
 
 
-        private async Task SaveToDatabase(List<AddJumpers> jumpers)
+        private async Task SaveToDatabase(List<Jumpers> jumpers)
         {
             foreach (var jumper in jumpers)
             {
@@ -79,7 +80,7 @@ namespace Luht_SkiJumpers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDistance(string id, [Bind("Id,Name, Distance")] AddJumpers addJumpers)
+        public async Task<IActionResult> AddDistance(string id, [Bind("Id,Name, Distance")] Jumpers addJumpers)
         {
 
             if (id != addJumpers.Id)
@@ -130,7 +131,7 @@ namespace Luht_SkiJumpers.Controllers
         // GET: AddJumpers
         public async Task<IActionResult> JumpersList()
         {
-            var jumpers = _context.AddJumpers.OrderByDescending(j => j.Distance).ToList();
+            List<Jumpers> jumpers = _context.AddJumpers.OrderByDescending(j => j.Distance).ToList();
 
             for (int i = 0; i < jumpers.Count; i++)
             {
@@ -169,7 +170,7 @@ namespace Luht_SkiJumpers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] AddJumpers addJumpers)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Jumpers addJumpers)
         {
             if (ModelState.IsValid)
             {
@@ -201,7 +202,7 @@ namespace Luht_SkiJumpers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name")] AddJumpers addJumpers)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name")] Jumpers addJumpers)
         {
             if (id != addJumpers.Id)
             {
@@ -256,7 +257,7 @@ namespace Luht_SkiJumpers.Controllers
         {
             if (_context.AddJumpers == null)
             {
-                return Problem("Entity set 'Luht_SkiJumpersContext.AddJumpers'  is null.");
+                return Problem("Entity set 'Luht_SkiJumpersContext.Jumpers'  is null.");
             }
             var addJumpers = await _context.AddJumpers.FindAsync(id);
             if (addJumpers != null)
