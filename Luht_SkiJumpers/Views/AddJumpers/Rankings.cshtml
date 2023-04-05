@@ -7,6 +7,7 @@
             <th>Place</th>
             <th>Name</th>
             <th>Distance</th>
+            <th>DNF</th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
                     <td>@jumper.Standings</td>
                     <td>@jumper.Name</td>
                     <td>@jumper.Distance</td>
+                    <td>@(jumper.Started?"Yes":"No")</td>
                 </tr>
         }
     </tbody>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Luht_SkiJumpers.Models
 {
@@ -10,7 +11,9 @@ namespace Luht_SkiJumpers.Models
         public string Name { get; set; }
         public int Standings { get; set; }
         public int Distance { get; set; }
-        public bool Finished { get; set; }
-        public bool Started { get; set; }
+        [DefaultValue(false)]
+        public bool Finished { get; set; } = false;
+        [DefaultValue(false)]
+        public bool Started { get; set; } = false;
     }
 }

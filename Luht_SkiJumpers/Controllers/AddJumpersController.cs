@@ -80,7 +80,7 @@ namespace Luht_SkiJumpers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDistance(string id, [Bind("Id,Name, Distance")] Jumpers addJumpers)
+        public async Task<IActionResult> AddDistance(string id, [Bind("Id,Name,Distance,Started")] Jumpers addJumpers)
         {
 
             if (id != addJumpers.Id)
@@ -111,13 +111,19 @@ namespace Luht_SkiJumpers.Controllers
             return View(addJumpers);
         }
 
-        public IActionResult Rankings()
+        public IActionResult Rankings([Bind("Started")] Jumpers addJumpers)
         {
             var jumpers = _context.AddJumpers.OrderByDescending(j => j.Distance).ToList();
+            if (addJumpers.Started == true)
+            {
+                SaveToDatabase(jumpers);
+                return RedirectToAction(nameof(Rankings));
+            }
 
             for (int i = 0; i < jumpers.Count; i++)
             {
                 jumpers[i].Standings = i + 1;
+
             }
 
             SaveToDatabase(jumpers);

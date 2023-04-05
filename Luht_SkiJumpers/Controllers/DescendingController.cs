@@ -44,6 +44,14 @@ namespace Luht_SkiJumpers.Controllers
             ViewData["JumperName"] = jumper.Name;
             return View();
         }
+        [HttpPost]
+        public IActionResult Fail([Bind("Started,Id")] Jumpers addJumpers)
+        {
+            addJumpers.Id = TempData["id"] as string;
+            addJumpers.Started = true;
+            _context.Update(addJumpers);
+            return RedirectToAction("Rankings", "AddJumpers");
+        }
 
         [HttpPost]
         public IActionResult Leave()
