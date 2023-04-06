@@ -14,6 +14,6 @@ namespace Luht_SkiJumpers.Models
         [DefaultValue(false)]
         public bool Finished { get; set; } = false;
         [DefaultValue(false)]
-        public bool Started { get; set; } = false;
+        public bool Started { get; set; }
     }
 }

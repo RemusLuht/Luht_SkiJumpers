@@ -62,12 +62,12 @@ namespace Luht_SkiJumpers.Controllers
 
         public async Task<IActionResult> AddDistance(string id)
         {
-            if (id == null || _context.AddJumpers == null)
+            if (id == null || _context.Jumpers == null)
             {
                 return NotFound();
             }
 
-            var addJumpers = await _context.AddJumpers.FindAsync(id);
+            var addJumpers = await _context.Jumpers.FindAsync(id);
             if (addJumpers == null)
             {
                 return NotFound();
@@ -80,7 +80,7 @@ namespace Luht_SkiJumpers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDistance(string id, [Bind("Id,Name,Distance,Started")] Jumpers addJumpers)
+        public async Task<IActionResult> AddDistance(string id, [Bind("Id,Name,Distance,Started,Finished")] Jumpers addJumpers)
         {
 
             if (id != addJumpers.Id)
@@ -92,6 +92,7 @@ namespace Luht_SkiJumpers.Controllers
             {
                 try
                 {
+                    addJumpers.Finished = true;
                     _context.Update(addJumpers);
                     await _context.SaveChangesAsync();
                 }
@@ -106,24 +107,34 @@ namespace Luht_SkiJumpers.Controllers
                         throw;
                     }
                 }
+                if (addJumpers.Started == true)
+                {
+                    addJumpers.Distance = 0;
+
+                    
+                }
                 return RedirectToAction(nameof(Rankings));
             }
             return View(addJumpers);
         }
 
-        public IActionResult Rankings([Bind("Started")] Jumpers addJumpers)
+        public IActionResult Rankings()
         {
-            var jumpers = _context.AddJumpers.OrderByDescending(j => j.Distance).ToList();
-            if (addJumpers.Started == true)
-            {
-                SaveToDatabase(jumpers);
-                return RedirectToAction(nameof(Rankings));
-            }
+            var jumpers = _context.Jumpers.OrderByDescending(j => j.Distance).ToList();
 
+            int lastPlace = 1;
             for (int i = 0; i < jumpers.Count; i++)
             {
-                jumpers[i].Standings = i + 1;
-
+                if (jumpers[i].Started == true)
+                {
+                    jumpers[i].Standings = jumpers.Count;
+                    jumpers[i].Distance = 0;
+                }
+                else
+                {
+                    jumpers[i].Standings = lastPlace;
+                    lastPlace++;
+                }
             }
 
             SaveToDatabase(jumpers);
@@ -137,7 +148,7 @@ namespace Luht_SkiJumpers.Controllers
         // GET: AddJumpers
         public async Task<IActionResult> JumpersList()
         {
-            List<Jumpers> jumpers = _context.AddJumpers.OrderByDescending(j => j.Distance).ToList();
+            List<Jumpers> jumpers = _context.Jumpers.OrderByDescending(j => j.Distance).ToList();
 
             for (int i = 0; i < jumpers.Count; i++)
             {
@@ -150,12 +161,12 @@ namespace Luht_SkiJumpers.Controllers
         // GET: AddJumpers/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.AddJumpers == null)
+            if (id == null || _context.Jumpers == null)
             {
                 return NotFound();
             }
 
-            var addJumpers = await _context.AddJumpers
+            var addJumpers = await _context.Jumpers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (addJumpers == null)
             {
@@ -190,12 +201,12 @@ namespace Luht_SkiJumpers.Controllers
         // GET: AddJumpers/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.AddJumpers == null)
+            if (id == null || _context.Jumpers == null)
             {
                 return NotFound();
             }
 
-            var addJumpers = await _context.AddJumpers.FindAsync(id);
+            var addJumpers = await _context.Jumpers.FindAsync(id);
             if (addJumpers == null)
             {
                 return NotFound();
@@ -241,12 +252,12 @@ namespace Luht_SkiJumpers.Controllers
         // GET: AddJumpers/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.AddJumpers == null)
+            if (id == null || _context.Jumpers == null)
             {
                 return NotFound();
             }
 
-            var addJumpers = await _context.AddJumpers
+            var addJumpers = await _context.Jumpers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (addJumpers == null)
             {
@@ -261,14 +272,14 @@ namespace Luht_SkiJumpers.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.AddJumpers == null)
+            if (_context.Jumpers == null)
             {
                 return Problem("Entity set 'Luht_SkiJumpersContext.Jumpers'  is null.");
             }
-            var addJumpers = await _context.AddJumpers.FindAsync(id);
+            var addJumpers = await _context.Jumpers.FindAsync(id);
             if (addJumpers != null)
             {
-                _context.AddJumpers.Remove(addJumpers);
+                _context.Jumpers.Remove(addJumpers);
             }
             
             await _context.SaveChangesAsync();
@@ -277,7 +288,7 @@ namespace Luht_SkiJumpers.Controllers
 
         private bool AddJumpersExists(string id)
         {
-          return _context.AddJumpers.Any(e => e.Id == id);
+          return _context.Jumpers.Any(e => e.Id == id);
         }
     }
 }

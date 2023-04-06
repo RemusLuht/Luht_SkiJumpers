@@ -1,20 +1,25 @@
-﻿@model Luht_SkiJumpers.Models.Jumpers
+﻿@model List<Luht_SkiJumpers.Models.Jumpers>
 @{
-    ViewData["Title"] = "Descend";
+ViewData["Title"] = "Descend";
 }
 
 <h1>Descend</h1>
-
 <form method="post" asp-action="Descend">
     <div class="form-group">
-        <label for="Id">Enter Jumper ID:</label>
-        <input type="text" name="Id" class="form-control" required />
+        <label for="Jumper">Select Jumper:</label>
+        <select name="Jumper" class="form-control" required>
+            <option value="">-- Select Jumper --</option>
+            @foreach (var jumper in Model)
+            {
+                @if (@jumper.Finished == false){
+                    <option value="@jumper.Id">@jumper.Name</option>
+                }
+            }
+        </select>
     </div>
     <button type="submit" class="btn btn-primary">Start Descent</button>
 </form>
-
-
 @if (ViewData["ErrorMessage"] != null)
 {
-    <div class="alert alert-danger">@ViewData["ErrorMessage"]</div>
+<div class="alert alert-danger">@ViewData["ErrorMessage"]</div>
 }

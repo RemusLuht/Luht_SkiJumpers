@@ -14,6 +14,6 @@ namespace Luht_SkiJumpers.Data
         {
         }
 
-        public DbSet<Luht_SkiJumpers.Models.Jumpers> AddJumpers { get; set; } = default!;
+        public DbSet<Luht_SkiJumpers.Models.Jumpers> Jumpers { get; set; } = default!;
     }
 }
