@@ -3,9 +3,16 @@
 ViewData["Title"] = "Descend";
 }
 
-<h1>Descend</h1>
 <form method="post" asp-action="Descend">
     <div class="form-group">
+        @foreach (var jumper in Model)
+        {
+            @if (@jumper.Finished == false && @jumper.Started == true)
+            {
+                <h1>Please wait, @jumper.Name is Descending!</h1>
+        
+            }
+        }
         <label for="Jumper">Select Jumper:</label>
         <select name="Jumper" class="form-control" required>
             <option value="">-- Select Jumper --</option>

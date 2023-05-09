@@ -35,7 +35,7 @@ namespace Luht_SkiJumpers.Controllers
             }
 
             var selectedJumper = await _context.Jumpers.FirstOrDefaultAsync(j => j.Id == Jumper && j.Finished == Finished);
-            selectedJumper.Finished = true;
+            
 
 
 
