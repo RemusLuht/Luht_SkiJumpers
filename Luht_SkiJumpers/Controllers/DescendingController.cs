@@ -61,7 +61,7 @@ namespace Luht_SkiJumpers.Controllers
         [HttpPost]
         public async Task<IActionResult> Fail()
         {
-            _isDescending=false;
+            _isDescending = false;
             // retrieve the Id from TempData
             string id = TempData["id"].ToString();
 
@@ -90,5 +90,6 @@ namespace Luht_SkiJumpers.Controllers
             var id = TempData["id"] as string;
             return RedirectToAction("AddDistance", "AddJumpers", new { id = id });
         }
+
     }
 }

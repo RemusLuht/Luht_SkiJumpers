@@ -22,8 +22,10 @@ namespace Luht_SkiJumpers.Controllers
 
         public IActionResult AddJumper()
         {
-            return View();
+            var jumper = new Jumpers();
+            return View(jumper);
         }
+
 
         // POST: AddJumpers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

@@ -1,32 +1,39 @@
 ﻿@model List<Luht_SkiJumpers.Models.Jumpers>
 @{
-ViewData["Title"] = "Descend";
+    ViewData["Title"] = "Descend";
 }
 
 <form method="post" asp-action="Descend">
     <div class="form-group">
         @foreach (var jumper in Model)
         {
-            @if (@jumper.Finished == false && @jumper.Started == true)
+            @if (!jumper.Finished && jumper.Started)
             {
                 <h1>Please wait, @jumper.Name is Descending!</h1>
-        
+                <button type="submit" formaction="@Url.Action("Fail", "Descending")" class="btn btn-primary">DNF</button>
+                <button type="submit" formaction="@Url.Action("Leave", "Descending")" class="btn btn-primary">Leave</button>
             }
         }
-        <label for="Jumper">Select Jumper:</label>
-        <select name="Jumper" class="form-control" required>
-            <option value="">-- Select Jumper --</option>
-            @foreach (var jumper in Model)
-            {
-                @if (@jumper.Finished == false){
-                    <option value="@jumper.Id">@jumper.Name</option>
+
+        @if (!Model.Any(j => !j.Finished && j.Started))
+        {
+            <label for="Jumper">Select Jumper:</label>
+            <select name="Jumper" class="form-control" required>
+                <option value="">-- Select Jumper --</option>
+                @foreach (var jumper in Model)
+                {
+                    @if (!jumper.Finished)
+                    {
+                        <option value="@jumper.Id">@jumper.Name</option>
+                    }
                 }
-            }
-        </select>
+            </select>
+            <button type="submit" class="btn btn-primary">Start Descent</button>
+        }
     </div>
-    <button type="submit" class="btn btn-primary">Start Descent</button>
 </form>
+
 @if (ViewData["ErrorMessage"] != null)
 {
-<div class="alert alert-danger">@ViewData["ErrorMessage"]</div>
+    <div class="alert alert-danger">@ViewData["ErrorMessage"]</div>
 }

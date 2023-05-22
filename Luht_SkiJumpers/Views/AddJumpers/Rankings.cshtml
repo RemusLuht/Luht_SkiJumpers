@@ -13,12 +13,12 @@
     <tbody>
         @foreach (var jumper in Model)
         {
-                <tr>
-                    <td>@jumper.Standings</td>
-                    <td>@jumper.Name</td>
-                    <td>@jumper.Distance</td>
-                    <td>@(jumper.Started?"Yes":"No")</td>
-                </tr>
+            <tr>
+                <td>@jumper.Standings</td>
+                <td>@jumper.Name</td>
+                <td>@jumper.Distance</td>
+                <td>@(jumper.Started && jumper.Finished ? "Yes" : "No")</td>
+            </tr>
         }
     </tbody>
 </table>
