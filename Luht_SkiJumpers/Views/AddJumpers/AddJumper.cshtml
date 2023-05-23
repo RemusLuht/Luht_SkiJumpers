@@ -52,10 +52,22 @@
             idInput.value = generateId(); // Automatically fill out the ID field
 
             function generateId() {
-                // Logic to generate the ID automatically
-                // Replace this with your own logic to generate the ID
-                // For example, you can use a timestamp or a random number
-                return Math.floor(Math.random() * 1000000).toString();
+                // Get the last generated ID from local storage
+                var lastId = localStorage.getItem("lastId");
+                var newId;
+
+                if (lastId) {
+                    // Increment the last generated ID by 1
+                    newId = parseInt(lastId) + 1;
+                } else {
+                    // If no last ID found, start with 1
+                    newId = 1;
+                }
+
+                // Store the new ID in local storage for future use
+                localStorage.setItem("lastId", newId);
+
+                return newId.toString();
             }
         };
     </script>
