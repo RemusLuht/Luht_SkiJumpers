@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "AddJumpers";
 }
-
 <h4>Add a new Jumper</h4>
 <hr />
 <div class="row">
@@ -21,7 +20,7 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" id="submitButton" />
             </div>
         </form>
     </div>
@@ -36,39 +35,42 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        window.onload = function () {
-            var form = document.getElementById("addJumperForm");
-            var nameInput = form.elements["Name"];
+        // Move the ID input field declaration outside the generateId() function
+        var form = document.getElementById("addJumperForm");
+        var nameInput = form.elements["Name"];
+        var idInput = form.elements["Id"];
 
-            form.onsubmit = function () {
-                var name = nameInput.value;
-                if (!isNaN(name)) {
-                    alert("Name cannot be a number.");
-                    return false; // Prevent form submission
-                }
-            };
+        // Check if the ID input field is empty before generating an ID
+        if (idInput.value.trim() === "") {
+            generateId();
+        }
 
-            var idInput = form.elements["Id"];
-            idInput.value = generateId(); // Automatically fill out the ID field
-
-            function generateId() {
-                // Get the last generated ID from local storage
-                var lastId = localStorage.getItem("lastId");
-                var newId;
-
-                if (lastId) {
-                    // Increment the last generated ID by 1
-                    newId = parseInt(lastId) + 1;
-                } else {
-                    // If no last ID found, start with 1
-                    newId = 1;
-                }
-
-                // Store the new ID in local storage for future use
-                localStorage.setItem("lastId", newId);
-
-                return newId.toString();
+        form.onsubmit = function () {
+            var name = nameInput.value;
+            if (!isNaN(name)) {
+                alert("Name cannot be a number.");
+                return false; // Prevent form submission
             }
         };
+
+        function generateId() {
+            // Get the last generated ID from local storage
+            var lastId = localStorage.getItem("lastId");
+            var newId;
+
+            if (lastId) {
+                // Increment the last generated ID by 1
+                newId = parseInt(lastId) + 1;
+            } else {
+                // If no last ID found, start with 1
+                newId = 1;
+            }
+
+            // Store the new ID in local storage for future use
+            localStorage.setItem("lastId", newId);
+
+            // Fill the ID input field with the generated ID
+            idInput.value = newId.toString();
+        }
     </script>
 }
